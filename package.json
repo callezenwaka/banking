@@ -1,0 +1,22 @@
+{
+  "name": "kapture",
+  "version": "1.0.0",
+  "description": "A simple vaccination app with PWA, kairos, firebase and vuejs",
+  "main": "index.js",
+  "scripts": {
+    "start": "http-server",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "PWA",
+    "Firebase",
+    "Kairos",
+    "Vuejs"
+  ],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "http-server": "^0.11.1",
+    "nodemon": "^1.17.3"
+  }
+}

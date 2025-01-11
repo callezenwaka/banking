@@ -1,8 +1,9 @@
+// bank.cpp
 #include "bank.h"
 #include <fstream>
 #include <sstream>
 
-Bank::Bank() {
+Bank::Bank(const std::string& file) : filename(file) {
     loadAccounts();
 }
 
@@ -11,16 +12,19 @@ Bank::~Bank() {
 }
 
 void Bank::saveAccounts() {
-    std::ofstream file(FILENAME);
-    for (const Account& acc : accounts) {
+    std::ofstream file(filename);
+    if (!file) return;  // Handle file open failure gracefully
+    
+    for (const auto& [accNum, acc] : accounts) {
         file << acc.toString() << '\n';
     }
 }
 
 void Bank::loadAccounts() {
-    std::ifstream file(FILENAME);
-    std::string line;
+    std::ifstream file(filename);
+    if (!file) return;  // Handle file open failure gracefully
     
+    std::string line;
     while (std::getline(file, line)) {
         std::istringstream iss(line);
         std::string accNum, name, balStr;
@@ -30,7 +34,7 @@ void Bank::loadAccounts() {
             std::getline(iss, balStr)) {
             try {
                 double balance = std::stod(balStr);
-                accounts.emplace_back(accNum, name, balance);
+                accounts.emplace(accNum, Account(accNum, name, balance));
             } catch (...) {
                 // Skip invalid entries
             }
@@ -40,47 +44,44 @@ void Bank::loadAccounts() {
 
 bool Bank::createAccount(const std::string& accNum, const std::string& name) {
     // Check if account already exists
-    if (findAccount(accNum) != nullptr) {
+    if (accounts.find(accNum) != accounts.end()) {
         return false;
     }
     
-    accounts.emplace_back(accNum, name, 0.0);
+    accounts.emplace(accNum, Account(accNum, name, 0.0));
     return true;
 }
 
 bool Bank::deposit(const std::string& accNum, double amount) {
-    // Invalid amount check
     if (amount <= 0) {
         return false;
     }
     
-    for (Account& acc : accounts) {
-        if (acc.getAccountNumber() == accNum) {
-            return acc.deposit(amount);
-        }
+    auto it = accounts.find(accNum);
+    if (it == accounts.end()) {
+        return false;
     }
-    return false;  // Account not found
+    
+    return it->second.deposit(amount);
 }
 
 bool Bank::withdraw(const std::string& accNum, double amount) {
-    // Invalid amount check
     if (amount <= 0) {
         return false;
     }
     
-    for (Account& acc : accounts) {
-        if (acc.getAccountNumber() == accNum) {
-            return acc.withdraw(amount);
-        }
+    auto it = accounts.find(accNum);
+    if (it == accounts.end()) {
+        return false;
     }
-    return false;  // Account not found
+    
+    return it->second.withdraw(amount);
 }
 
 Account* Bank::findAccount(const std::string& accNum) {
-    for (Account& acc : accounts) {
-        if (acc.getAccountNumber() == accNum) {
-            return &acc;
-        }
+    auto it = accounts.find(accNum);
+    if (it == accounts.end()) {
+        return nullptr;
     }
-    return nullptr;
+    return &(it->second);
 }

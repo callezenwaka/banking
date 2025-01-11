@@ -2,20 +2,38 @@
 #include "bank.h"
 #include <filesystem>
 
+// class BankTest : public ::testing::Test {
+// protected:
+//     Bank* bank;
+//     const std::string TEST_FILENAME = "test_accounts.txt";
+
+//     void SetUp() override {
+//         // Remove test file if it exists
+//         std::filesystem::remove(TEST_FILENAME);
+//         bank = new Bank();
+//     }
+
+//     void TearDown() override {
+//         delete bank;
+//         // Clean up test file
+//         std::filesystem::remove(TEST_FILENAME);
+//     }
+// };
+
+// test_bank.cpp
 class BankTest : public ::testing::Test {
 protected:
-    Bank* bank;
+    std::unique_ptr<Bank> bank;
     const std::string TEST_FILENAME = "test_accounts.txt";
 
     void SetUp() override {
         // Remove test file if it exists
         std::filesystem::remove(TEST_FILENAME);
-        bank = new Bank();
+        bank = std::make_unique<Bank>(TEST_FILENAME);
     }
 
     void TearDown() override {
-        delete bank;
-        // Clean up test file
+        bank.reset();  // Delete bank before removing file
         std::filesystem::remove(TEST_FILENAME);
     }
 };

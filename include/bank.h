@@ -1,20 +1,21 @@
+// bank.h
 #ifndef BANK_H
 #define BANK_H
 
-#include <vector>
+#include <map>
 #include <string>
 #include "account.h"
 
 class Bank {
 private:
-    std::vector<Account> accounts;
-    const std::string FILENAME = "accounts.txt";
+    std::map<std::string, Account> accounts;  // Changed from vector to map
+    std::string filename;  // Make filename configurable
     
     void saveAccounts();
     void loadAccounts();
 
 public:
-    Bank();
+    explicit Bank(const std::string& file = "accounts.txt");
     ~Bank();
     
     bool createAccount(const std::string& accNum, const std::string& name);

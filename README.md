@@ -38,7 +38,7 @@ cmake --build .  # Build
 ctest --output-on-failure  # Run tests
 ```
 
-## Generate build files and compile:
+## Re-build files and compile:
 ```bash
 cd build          # Make sure you're in the build directory
 cmake --build .   # Rebuild the project
@@ -46,12 +46,7 @@ cmake --build .   # Rebuild the project
 
 ## Run the bank app:
 ```bash
-./bank
-```
-
-## Execute the bank tests:
-```bash
-./bank_tests
+./bin/bank
 ```
 
 ## Run cmake with:
@@ -59,7 +54,7 @@ cmake --build .   # Rebuild the project
 cmake -DCMAKE_EXPORT_COMPILE_COMMANDS=ON ..
 ```
 
-## Some useful CTest commands
+## Execute the bank tests with some useful CTest commands
 ```bash
 # Run tests with detailed output
 ctest --output-on-failure

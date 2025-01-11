@@ -70,7 +70,7 @@ int main() {
                 std::cout << "Account Details:\n"
                          << "Account Number: " << acc->getAccountNumber() << "\n"
                          << "Name: " << acc->getName() << "\n"
-                         << "Balance: $" << std::fixed << std::setprecision(2) 
+                         << "✨ Balance: $" << std::fixed << std::setprecision(2) 
                          << acc->getBalance() << "\n";
             } else {
                 std::cout << "Account not found!\n";
